@@ -1,3 +1,6 @@
+use serde_json::Value;
+use serde_json_path::JsonPathExt;
+
 mod utils;
 
 use wasm_bindgen::prelude::*;
@@ -8,12 +11,24 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[wasm_bindgen]
-extern {
-    fn alert(s: &str);
+
+#[derive(Debug, thiserror::Error)]
+pub enum Error {
+    #[error(transparent)]
+    InvalidJsonPath(#[from] serde_json_path::Error),
+    #[error("error serializing query result: {0}")]
+    SerializeQuery(#[from] serde_wasm_bindgen::Error),
+}
+
+impl From<Error> for JsValue {
+    fn from(err: Error) -> Self {
+        err.to_string().into()
+    }
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, serde-json-path-com!");
+pub fn parse_json(json: JsValue, path: &str) -> Result<JsValue, Error> {
+    let value: Value = serde_wasm_bindgen::from_value(json)?;
+    let query = value.json_path(path)?.all();
+    Ok(serde_wasm_bindgen::to_value(&query)?)
 }
