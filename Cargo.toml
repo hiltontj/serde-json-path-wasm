@@ -1,6 +1,6 @@
 [package]
 name = "serde-json-path"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Trevor Hilton <trevor.hilton@gmail.com>"]
 edition = "2021"
 description = "Use serde_json_path in the browser"
