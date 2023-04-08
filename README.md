@@ -20,7 +20,7 @@ const obj = {
 
 const path = JsonPath.parse("$.foo.*");
 const nodes = path.query(obj);
-// -> ["bar", "baz"]
+// nodes -> ["bar", "baz"]
 ```
 
 ## Build
