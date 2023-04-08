@@ -1,20 +1,37 @@
-# serde-json-path-wasm
+# serde-json-path
 
 ## About
 
-This crate is used to publish the Rust [`serde_json_path`](https://crates.io/crates/serde_json_path) crate into WASM, to be used in a browser.
+This crate is used to publish the JSONPath parsing and query functionality of the Rust [`serde_json_path`](https://crates.io/crates/serde_json_path) crate into WASM, to be used in a browser.
 
 It is used at [serdejsonpath.live](https://serdejsonpath.live).
 
 ## Usage
 
-### Build with `wasm-pack build`
+```javascript
+import { JsonPath } from "serde-json-path";
+
+const obj = {
+  "foo": [
+    "bar",
+    "baz"
+  ]
+};
+
+const path = JsonPath.parse("$.foo.*");
+const nodes = path.query(obj);
+// nodes -> ["bar", "baz"]
+```
+
+## Build
+
+Build with `wasm-pack build`
 
 ```
 wasm-pack build
 ```
 
-### Publish to NPM with `wasm-pack publish`
+Publish to NPM with `wasm-pack publish`
 
 ```
 wasm-pack publish
