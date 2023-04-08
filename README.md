@@ -9,8 +9,6 @@ It is used at [serdejsonpath.live](https://serdejsonpath.live).
 ## Usage
 
 ```javascript
-import { JsonPath } from "serde-json-path";
-
 const obj = {
   "foo": [
     "bar",
@@ -18,9 +16,13 @@ const obj = {
   ]
 };
 
-const path = JsonPath.parse("$.foo.*");
-const nodes = path.query(obj);
-// nodes -> ["bar", "baz"]
+// Being a WASM package, serde-json-path loads asynchronously:
+import("serde-json-path")
+  .then(({ JsonPath })=> {
+    const path = JsonPath.parse("$.foo.*");
+    const nodes = path.query(obj);
+    // nodes -> ["bar", "baz"]
+  })
 ```
 
 ## Build
