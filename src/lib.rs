@@ -46,4 +46,11 @@ impl JsonPath {
         let nodes = self.0.query(&value);
         Ok(nodes.serialize(&Serializer::json_compatible())?)
     }
+
+    /// Query a JSON value to produce a list of nodes
+    pub fn query_located(&self, json: JsValue) -> Result<JsValue, JsError> {
+        let value: Value = serde_wasm_bindgen::from_value(json)?;
+        let nodes = self.0.query_located(&value);
+        Ok(nodes.serialize(&Serializer::json_compatible())?)
+    }
 }
